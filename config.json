@@ -1,0 +1,12 @@
+{
+  "llm_model": "openai/gpt-oss-120b",
+  "llm_base_url": "https://api.groq.com/openai/v1",
+  "max_retries": 3,
+  "llm_timeout_s": 30,
+  "max_retry_after_s": 60,
+  "max_body_chars": 4000,
+  "max_llm_calls_per_run": 25,
+  "delay_between_llm_calls_s": 3,
+  "redaction_min_token_length": 20,
+  "timeout_threshold_ms": 10000
+}

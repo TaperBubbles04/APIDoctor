@@ -1,0 +1,258 @@
+{
+ "mode": "llm",
+ "model": "openai/gpt-oss-120b",
+ "fake": false,
+ "max_calls": 25,
+ "real_calls": 23,
+ "cache_hits": 0,
+ "n_cases": 20,
+ "prompt_version": "2",
+ "scores": {
+  "clear": {
+   "size": 12,
+   "scored": 12,
+   "skipped": 0,
+   "category": 12,
+   "retryable": 12,
+   "both": 12
+  },
+  "ambiguous": {
+   "size": 5,
+   "scored": 5,
+   "skipped": 0,
+   "category": 5,
+   "retryable": 5,
+   "both": 5
+  },
+  "trap": {
+   "size": 3,
+   "scored": 3,
+   "skipped": 0,
+   "category": 3,
+   "retryable": 2,
+   "both": 2
+  }
+ },
+ "rows": [
+  {
+   "id": "c01",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API responded with HTTP 401 and an error message \"invalid api key\", indicating that the provided Authorization header does not contain a valid API key. This is an authentication failure, not a request validation or server issue.",
+   "skipped": false
+  },
+  {
+   "id": "c02",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API returned HTTP 403 with error \"insufficient scope\", indicating the provided API key is valid but does not have the required permissions for the listOrders operation. The spec only documents a 401 for missing/invalid keys, so this is an authorization scope issue.",
+   "skipped": false
+  },
+  {
+   "id": "c03",
+   "group": "clear",
+   "expected_category": "not_found",
+   "expected_retryable": false,
+   "got_category": "not_found",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API returned a 404 response because the requested order ID (ord_404) does not exist, which matches the spec's defined 404 response for a missing order.",
+   "skipped": false
+  },
+  {
+   "id": "c04",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API returned HTTP 422 with error indicating the 'quantity' field failed validation because it was provided as a string ('three') instead of an integer as required by the spec.",
+   "skipped": false
+  },
+  {
+   "id": "c05",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The request body is missing the required field \"quantity\" which is defined as an integer in the API spec. The server responded with 400 Bad Request.",
+   "skipped": false
+  },
+  {
+   "id": "c06",
+   "group": "clear",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The GET request to /v1/items was rejected with HTTP 429, indicating the client has exceeded the allowed request rate. The response includes a Retry-After header and an error message \"rate limit exceeded\" as defined in the spec for the listItems operation.",
+   "skipped": false
+  },
+  {
+   "id": "c07",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API returned HTTP 500 with an \"internal error\" message, which according to the OpenAPI excerpt is a defined server\u2011error response. No validation or authentication issues are indicated, so the failure originates from the server side.",
+   "skipped": false
+  },
+  {
+   "id": "c08",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API responded with HTTP 503 Service Unavailable, indicating a temporary server-side failure. The spec does not list 503 as an expected response, so this is treated as a server error.",
+   "skipped": false
+  },
+  {
+   "id": "c09",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The request to https://api.example.test/v1/reports did not receive any HTTP status code and timed out after 30 seconds, indicating a network timeout rather than an application error.",
+   "skipped": false
+  },
+  {
+   "id": "c10",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API responded with HTTP 504 Gateway Timeout, indicating the server did not produce a response within the allowed time. This is a server-side issue, not a client request problem.",
+   "skipped": false
+  },
+  {
+   "id": "c11",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The server returned HTTP 408 (Request Timeout), meaning the client did not receive a response within the allotted time. This is a network/timeout issue rather than a problem with request validation or authentication.",
+   "skipped": false
+  },
+  {
+   "id": "c12",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API responded with HTTP 502 Bad Gateway, indicating a failure in the upstream server or gateway rather than a problem with the request. This is a server-side error, not caused by authentication, validation, or rate limiting.",
+   "skipped": false
+  },
+  {
+   "id": "a01",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "conflict",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API returned HTTP 409 Conflict indicating a duplicate order was attempted. The response message states that an order with the same Idempotency-Key already exists, meaning the request was recognized as a repeat of a previous successful call.",
+   "skipped": false
+  },
+  {
+   "id": "a02",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "conflict",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The server returned HTTP 409 with error \"stale_version\", meaning the order was changed after the client last read it. The update was rejected because the client attempted to modify a stale version of the resource.",
+   "skipped": false
+  },
+  {
+   "id": "a03",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "rate_limit",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The server returned HTTP 200 but the response body contains an error indicating the daily quota has been exceeded. According to the OpenAPI excerpt, rate\u2011limit violations should be signaled with a 429 status code. The mismatch means the client sees a successful status while the payload reports a quota error, causing the call to be treated as a failure.",
+   "skipped": false
+  },
+  {
+   "id": "a04",
+   "group": "ambiguous",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The request body is malformed JSON (missing closing braces and quotes), so the server cannot parse it and returns a 400 error with an \"invalid JSON\" message.",
+   "skipped": false
+  },
+  {
+   "id": "a05",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API returned a 400 Bad Request with the message \"rate limit exceeded, slow down\". The OpenAPI spec defines rate\u2011limit errors as HTTP 429, so the failure is due to exceeding the allowed request rate.",
+   "skipped": false
+  },
+  {
+   "id": "t01",
+   "group": "trap",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The request body sent 'quantity' as a string ('three') while the OpenAPI spec defines 'quantity' as an integer. The server rejected the request, reporting the type mismatch, but returned a 500 status instead of the expected 422 validation error.",
+   "skipped": false
+  },
+  {
+   "id": "t02",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API responded with HTTP 429 and a message that the daily quota is exhausted, which matches the rate\u2011limit response defined in the spec (status code 429).",
+   "skipped": false
+  },
+  {
+   "id": "t03",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API returned HTTP 403 with an error payload indicating \"rate_limited\" and a retry-after suggestion. This means the client has exceeded the allowed request rate, even though the OpenAPI excerpt only documents 200 and 401 responses. The server is enforcing a rate limit, causing the request to fail.",
+   "skipped": false
+  }
+ ]
+}

@@ -1,0 +1,125 @@
+# SYNTHETIC orders API, invented for APIDoctor tests. Not a real service.
+openapi: 3.0.3
+info:
+  title: Synthetic Orders API (not real)
+  version: 0.0.1-synthetic
+servers:
+  - url: https://api.example.test
+paths:
+  /v1/orders:
+    get:
+      operationId: listOrders
+      summary: List orders
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/ApiKeyQuery'
+      responses:
+        "200":
+          description: A list of orders
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createOrder
+      summary: Create an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+      responses:
+        "201":
+          description: Created
+        "422":
+          $ref: '#/components/responses/ValidationFailed'
+  /v1/orders/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getOrder
+      summary: Get one order
+      responses:
+        "200":
+          description: The order
+        "404":
+          description: No such order
+    put:
+      operationId: updateOrder
+      summary: Update an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrder'
+      responses:
+        "200":
+          description: Updated
+        "500":
+          description: Server error
+  /v1/items:
+    get:
+      operationId: listItems
+      summary: List items (rate limited)
+      responses:
+        "200":
+          description: A list of items
+        "429":
+          description: Too many requests
+  /v1/reports:
+    get:
+      operationId: getReports
+      summary: Slow report endpoint
+      responses:
+        "200":
+          description: The report
+components:
+  parameters:
+    ApiKeyQuery:
+      name: api_key
+      in: query
+      required: true
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+    ValidationFailed:
+      description: Request body failed validation
+  schemas:
+    Customer:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    CreateOrder:
+      type: object
+      required: [customer, quantity]
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+        quantity:
+          type: integer
+        note:
+          type: string
+        express:
+          type: boolean
+    UpdateOrder:
+      type: object
+      required: [note]
+      properties:
+        note:
+          type: string
+        priority:
+          type: number

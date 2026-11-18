@@ -1,0 +1,258 @@
+{
+ "mode": "hybrid",
+ "model": "openai/gpt-oss-120b",
+ "fake": false,
+ "max_calls": 25,
+ "real_calls": 0,
+ "cache_hits": 5,
+ "n_cases": 20,
+ "prompt_version": "2",
+ "scores": {
+  "clear": {
+   "size": 12,
+   "scored": 12,
+   "skipped": 0,
+   "category": 12,
+   "retryable": 12,
+   "both": 12
+  },
+  "ambiguous": {
+   "size": 5,
+   "scored": 5,
+   "skipped": 0,
+   "category": 5,
+   "retryable": 5,
+   "both": 5
+  },
+  "trap": {
+   "size": 3,
+   "scored": 3,
+   "skipped": 0,
+   "category": 1,
+   "retryable": 0,
+   "both": 0
+  }
+ },
+ "rows": [
+  {
+   "id": "c01",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server does not accept the credentials (missing, expired or invalid).",
+   "skipped": false
+  },
+  {
+   "id": "c02",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The credentials were understood but do not have permission for this action.",
+   "skipped": false
+  },
+  {
+   "id": "c03",
+   "group": "clear",
+   "expected_category": "not_found",
+   "expected_retryable": false,
+   "got_category": "not_found",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server has nothing at this URL (wrong path, or the resource ID does not exist).",
+   "skipped": false
+  },
+  {
+   "id": "c04",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server rejected the request, and the spec shows why: field 'quantity' should be integer but was sent as string.",
+   "skipped": false
+  },
+  {
+   "id": "c05",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server rejected the request, and the spec shows why: required field(s) missing from the request: quantity.",
+   "skipped": false
+  },
+  {
+   "id": "c06",
+   "group": "clear",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "Too many requests. The server says to wait (Retry-After: 30).",
+   "skipped": false
+  },
+  {
+   "id": "c07",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (500). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c08",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (503). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c09",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "No response was received. This is usually a network problem or a slow server, not a mistake in the request.",
+   "skipped": false
+  },
+  {
+   "id": "c10",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (504). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c11",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server answered 408 Request Timeout. This is usually a network problem or a slow server, not a mistake in the request.",
+   "skipped": false
+  },
+  {
+   "id": "c12",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (502). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "a01",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "conflict",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The API returned HTTP 409 Conflict indicating a duplicate order was attempted. The response message states that an order with the same Idempotency-Key already exists, meaning the request was recognized as a repeat of a previous successful call.",
+   "skipped": false
+  },
+  {
+   "id": "a02",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "conflict",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The server returned HTTP 409 with error \"stale_version\", meaning the order was changed after the client last read it. The update was rejected because the client attempted to modify a stale version of the resource.",
+   "skipped": false
+  },
+  {
+   "id": "a03",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "rate_limit",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The server returned HTTP 200 but the response body contains an error indicating the daily quota has been exceeded. According to the OpenAPI excerpt, rate\u2011limit violations should be signaled with a 429 status code. The mismatch means the client sees a successful status while the payload reports a quota error, causing the call to be treated as a failure.",
+   "skipped": false
+  },
+  {
+   "id": "a04",
+   "group": "ambiguous",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "llm",
+   "explanation": "The request body is malformed JSON (missing closing braces and quotes), so the server cannot parse it and returns a 400 error with an \"invalid JSON\" message.",
+   "skipped": false
+  },
+  {
+   "id": "a05",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "llm",
+   "explanation": "The API returned a 400 Bad Request with the message \"rate limit exceeded, slow down\". The OpenAPI spec defines rate\u2011limit errors as HTTP 429, so the failure is due to exceeding the allowed request rate.",
+   "skipped": false
+  },
+  {
+   "id": "t01",
+   "group": "trap",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (500). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "t02",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "Too many requests (429), but the server did not say how long to wait.",
+   "skipped": false
+  },
+  {
+   "id": "t03",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The credentials were understood but do not have permission for this action.",
+   "skipped": false
+  }
+ ]
+}

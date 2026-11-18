@@ -1,0 +1,258 @@
+{
+ "mode": "rules",
+ "model": "openai/gpt-oss-120b",
+ "fake": false,
+ "max_calls": 25,
+ "real_calls": 0,
+ "cache_hits": 0,
+ "n_cases": 20,
+ "prompt_version": "2",
+ "scores": {
+  "clear": {
+   "size": 12,
+   "scored": 12,
+   "skipped": 0,
+   "category": 12,
+   "retryable": 12,
+   "both": 12
+  },
+  "ambiguous": {
+   "size": 5,
+   "scored": 5,
+   "skipped": 0,
+   "category": 0,
+   "retryable": 4,
+   "both": 0
+  },
+  "trap": {
+   "size": 3,
+   "scored": 3,
+   "skipped": 0,
+   "category": 1,
+   "retryable": 0,
+   "both": 0
+  }
+ },
+ "rows": [
+  {
+   "id": "c01",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server does not accept the credentials (missing, expired or invalid).",
+   "skipped": false
+  },
+  {
+   "id": "c02",
+   "group": "clear",
+   "expected_category": "auth",
+   "expected_retryable": false,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The credentials were understood but do not have permission for this action.",
+   "skipped": false
+  },
+  {
+   "id": "c03",
+   "group": "clear",
+   "expected_category": "not_found",
+   "expected_retryable": false,
+   "got_category": "not_found",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server has nothing at this URL (wrong path, or the resource ID does not exist).",
+   "skipped": false
+  },
+  {
+   "id": "c04",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server rejected the request, and the spec shows why: field 'quantity' should be integer but was sent as string.",
+   "skipped": false
+  },
+  {
+   "id": "c05",
+   "group": "clear",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "validation",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The server rejected the request, and the spec shows why: required field(s) missing from the request: quantity.",
+   "skipped": false
+  },
+  {
+   "id": "c06",
+   "group": "clear",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "Too many requests. The server says to wait (Retry-After: 30).",
+   "skipped": false
+  },
+  {
+   "id": "c07",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (500). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c08",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (503). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c09",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "No response was received. This is usually a network problem or a slow server, not a mistake in the request.",
+   "skipped": false
+  },
+  {
+   "id": "c10",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (504). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "c11",
+   "group": "clear",
+   "expected_category": "network_timeout",
+   "expected_retryable": true,
+   "got_category": "network_timeout",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server answered 408 Request Timeout. This is usually a network problem or a slow server, not a mistake in the request.",
+   "skipped": false
+  },
+  {
+   "id": "c12",
+   "group": "clear",
+   "expected_category": "server_error",
+   "expected_retryable": true,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (502). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "a01",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "unknown",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "rules cannot decide: status 409 has no rule",
+   "skipped": false
+  },
+  {
+   "id": "a02",
+   "group": "ambiguous",
+   "expected_category": "conflict",
+   "expected_retryable": false,
+   "got_category": "unknown",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "rules cannot decide: status 409 has no rule",
+   "skipped": false
+  },
+  {
+   "id": "a03",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "unknown",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "rules cannot decide: 200 response but the body contains an error",
+   "skipped": false
+  },
+  {
+   "id": "a04",
+   "group": "ambiguous",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "unknown",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "rules cannot decide: 400/422 with no spec problem found and no field named in the response",
+   "skipped": false
+  },
+  {
+   "id": "a05",
+   "group": "ambiguous",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "unknown",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "rules cannot decide: 400/422 with no spec problem found and no field named in the response",
+   "skipped": false
+  },
+  {
+   "id": "t01",
+   "group": "trap",
+   "expected_category": "validation",
+   "expected_retryable": false,
+   "got_category": "server_error",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "The server failed (500). This is usually temporary and not caused by the request.",
+   "skipped": false
+  },
+  {
+   "id": "t02",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": false,
+   "got_category": "rate_limit",
+   "got_retryable": true,
+   "source": "rule",
+   "explanation": "Too many requests (429), but the server did not say how long to wait.",
+   "skipped": false
+  },
+  {
+   "id": "t03",
+   "group": "trap",
+   "expected_category": "rate_limit",
+   "expected_retryable": true,
+   "got_category": "auth",
+   "got_retryable": false,
+   "source": "rule",
+   "explanation": "The credentials were understood but do not have permission for this action.",
+   "skipped": false
+  }
+ ]
+}
